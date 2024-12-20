@@ -1,5 +1,5 @@
 import * as core from '@actions/core';
-import * as cache from '@actions/cache';
+import * as cache from '@buildpulse/cache';
 
 import {State} from './constants';
 import {getPackageManagerInfo} from './cache-utils';

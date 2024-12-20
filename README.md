@@ -1,10 +1,4 @@
-# setup-node
-
-[![basic-validation](https://github.com/actions/setup-node/actions/workflows/basic-validation.yml/badge.svg)](https://github.com/actions/setup-node/actions/workflows/basic-validation.yml)
-[![versions](https://github.com/actions/setup-node/actions/workflows/versions.yml/badge.svg)](https://github.com/actions/setup-node/actions/workflows/versions.yml)
-[![e2e-cache](https://github.com/actions/setup-node/actions/workflows/e2e-cache.yml/badge.svg?branch=main)](https://github.com/actions/setup-node/actions/workflows/e2e-cache.yml)
-[![proxy](https://github.com/actions/setup-node/actions/workflows/proxy.yml/badge.svg)](https://github.com/actions/setup-node/actions/workflows/proxy.yml)
-
+# BuildPulse setup-node
 This action provides the following functionality for GitHub Actions users:
 
 - Optionally downloading and caching distribution of the requested Node.js version, and adding it to the PATH
@@ -18,7 +12,7 @@ See [action.yml](action.yml)
 
 <!-- start usage -->
 ```yaml
-- uses: actions/setup-node@v4
+- uses: buildpulse/setup-node@v4
   with:
     # Version Spec of the version to use in SemVer notation.
     # It also admits such aliases as lts/*, latest, nightly and canary builds
@@ -26,22 +20,22 @@ See [action.yml](action.yml)
     node-version: ''
 
     # File containing the version Spec of the version to use.  Examples: package.json, .nvmrc, .node-version, .tool-versions.
-    # If node-version and node-version-file are both provided the action will use version from node-version. 
+    # If node-version and node-version-file are both provided the action will use version from node-version.
     node-version-file: ''
 
-    # Set this option if you want the action to check for the latest available version 
+    # Set this option if you want the action to check for the latest available version
     # that satisfies the version spec.
-    # It will only get affect for lts Nodejs versions (12.x, >=10.15.0, lts/Hydrogen). 
+    # It will only get affect for lts Nodejs versions (12.x, >=10.15.0, lts/Hydrogen).
     # Default: false
     check-latest: false
 
     # Target architecture for Node to use. Examples: x86, x64. Will use system architecture by default.
-    # Default: ''. The action use system architecture by default 
+    # Default: ''. The action use system architecture by default
     architecture: ''
 
-    # Used to pull node distributions from https://github.com/actions/node-versions. 
-    # Since there's a default, this is typically not supplied by the user. 
-    # When running this action on github.com, the default value is sufficient. 
+    # Used to pull node distributions from https://github.com/actions/node-versions.
+    # Since there's a default, this is typically not supplied by the user.
+    # When running this action on github.com, the default value is sufficient.
     # When running on GHES, you can pass a personal access token for github.com if you are experiencing rate limiting.
     #
     # We recommend using a service account with the least permissions necessary. Also
@@ -57,18 +51,18 @@ See [action.yml](action.yml)
     # Default: ''
     cache: ''
 
-    # Used to specify the path to a dependency file: package-lock.json, yarn.lock, etc. 
-    # It will generate hash from the target file for primary key. It works only If cache is specified.  
+    # Used to specify the path to a dependency file: package-lock.json, yarn.lock, etc.
+    # It will generate hash from the target file for primary key. It works only If cache is specified.
     # Supports wildcards or a list of file names for caching multiple dependencies.
     # Default: ''
     cache-dependency-path: ''
 
-    # Optional registry to set up for auth. Will set the registry in a project level .npmrc and .yarnrc file, 
+    # Optional registry to set up for auth. Will set the registry in a project level .npmrc and .yarnrc file,
     # and set up auth to read in from env.NODE_AUTH_TOKEN.
     # Default: ''
     registry-url: ''
 
-    # Optional scope for authenticating against scoped registries. 
+    # Optional scope for authenticating against scoped registries.
     # Will fall back to the repository owner when using the GitHub Packages registry (https://npm.pkg.github.com/).
     # Default: ''
     scope: ''
@@ -84,7 +78,7 @@ See [action.yml](action.yml)
 ```yaml
 steps:
 - uses: actions/checkout@v4
-- uses: actions/setup-node@v4
+- uses: buildpulse/setup-node@v4
   with:
     node-version: 18
 - run: npm ci
@@ -120,7 +114,7 @@ It's **always** recommended to commit the lockfile of your package manager for s
 
 ## Caching global packages data
 
-The action has a built-in functionality for caching and restoring dependencies. It uses [actions/cache](https://github.com/actions/cache) under the hood for caching global packages data but requires less configuration settings. Supported package managers are `npm`, `yarn`, `pnpm` (v6.10+). The `cache` input is optional, and caching is turned off by default.
+The action has a built-in functionality for caching and restoring dependencies. It uses [actions/cache](https://github.com/buildpulse/cache) under the hood for caching global packages data but requires less configuration settings. Supported package managers are `npm`, `yarn`, `pnpm` (v6.10+). The `cache` input is optional, and caching is turned off by default.
 
 The action defaults to search for the dependency file (`package-lock.json`, `npm-shrinkwrap.json` or `yarn.lock`) in the repository root, and uses its hash as a part of the cache key. Use `cache-dependency-path` for cases when multiple dependency files are used, or they are located in different subdirectories.
 
@@ -133,7 +127,7 @@ See the examples of using cache for `yarn`/`pnpm` and `cache-dependency-path` in
 ```yaml
 steps:
 - uses: actions/checkout@v4
-- uses: actions/setup-node@v4
+- uses: buildpulse/setup-node@v4
   with:
     node-version: 20
     cache: 'npm'
@@ -146,7 +140,7 @@ steps:
 ```yaml
 steps:
 - uses: actions/checkout@v4
-- uses: actions/setup-node@v4
+- uses: buildpulse/setup-node@v4
   with:
     node-version: 20
     cache: 'npm'
@@ -168,7 +162,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Setup node
-        uses: actions/setup-node@v4
+        uses: buildpulse/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
       - run: npm ci
@@ -182,7 +176,7 @@ jobs:
 To get a higher rate limit, you can [generate a personal access token on github.com](https://github.com/settings/tokens/new) and pass it as the `token` input for the action:
 
 ```yaml
-uses: actions/setup-node@v4
+uses: buildpulse/setup-node@v4
 with:
   token: ${{ secrets.GH_DOTCOM_TOKEN }}
   node-version: 20
